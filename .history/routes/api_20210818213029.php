@@ -35,16 +35,10 @@ Route::group([
     Route::get('/requests/pending', [SolicitudController::class, 'pending']);
     // Obtener solicitudes aprobadas
     Route::get('/requests/approved', [SolicitudController::class, 'approved']);
-    // Obtener solicitudes rechazadas
     Route::get('/requests/rejected', [SolicitudController::class, 'rejected']);
-    // Insertar solicitud
     Route::post('/request', [SolicitudController::class, 'saveRequest']);
-    // Aprobar solicitud
     Route::put('/request/approve/{id}', [SolicitudController::class, 'approveRequest']);
-    // Rechazar solicitud
     Route::put('/request/reject/{id}', [SolicitudController::class, 'rejectRequest']);
-    // Obtener solicitud por usuario autenticado
     Route::get('/user/request', [SolicitudController::class, 'userRequest']);
-    // Actualizar solicitud
     Route::post('/request/{id}', [SolicitudController::class, 'updateRequest']);
 });
