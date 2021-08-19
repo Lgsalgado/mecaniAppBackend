@@ -111,23 +111,21 @@ class SolicitudController extends Controller
 
     public function updateRequest(Request $request, $id)
     {
+        return response()->json($request);
         $fileResult = $request->file('certificate')->store('apiDocs');
+        return $fileResult;
         $solicitud = Solicitud::find($id)->where('user_id', auth()->user()->id);
         if (!$solicitud) {
             return response()->json([
                 'success' => false,
-                'message' => 'La solicitud no existe o no tiene acceso'
+                'message' => 'La solicitud no existe'
             ], 404);
         }
-        $solicitud = Solicitud::find($id)->update([
+        Solicitud::find($id)->update([
             'name' => $request->name,
             'type' => $request->type,
             'address' => $request->address,
             'certificate' => $fileResult
-        ]);
-        return response()->json([
-            'success' => true,
-            'result' => Solicitud::find($id),
         ]);
     }
 }

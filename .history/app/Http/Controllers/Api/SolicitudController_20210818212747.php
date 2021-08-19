@@ -127,7 +127,7 @@ class SolicitudController extends Controller
         ]);
         return response()->json([
             'success' => true,
-            'result' => Solicitud::find($id),
+            'result' => $solicitud,
         ]);
     }
 }

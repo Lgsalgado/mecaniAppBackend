@@ -119,15 +119,11 @@ class SolicitudController extends Controller
                 'message' => 'La solicitud no existe o no tiene acceso'
             ], 404);
         }
-        $solicitud = Solicitud::find($id)->update([
+        Solicitud::find($id)->update([
             'name' => $request->name,
             'type' => $request->type,
             'address' => $request->address,
             'certificate' => $fileResult
-        ]);
-        return response()->json([
-            'success' => true,
-            'result' => Solicitud::find($id),
         ]);
     }
 }
