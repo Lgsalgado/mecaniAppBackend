@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateNotificationsTable extends Migration
+class CreateMecanicasTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,20 @@ class CreateNotificationsTable extends Migration
      */
     public function up()
     {
-        Schema::create('notifications', function (Blueprint $table) {
+        Schema::create('mecanicas', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->unsignedBigInteger('mech_id');
-            $table->foreign('mech_id')->references('id')->on('workshop_mechanics')->onDelete('cascade');
-            $table->unsignedBigInteger('req_id');
             $table->string('name');
+            $table->string('address');
+            $table->string('phone');
+            $table->string('open_hour');
+            $table->string('close_hour');
+            $table->json('services');
+            $table->string('facebook');
+            $table->string('instagram');
+            $table->string('certificate');
+            $table->enum('state', ['pendiente', 'aprobado', 'rechazado', 'completado'])->default('pendiente');
             $table->timestamps();
         });
     }
@@ -32,6 +38,6 @@ class CreateNotificationsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('notifications');
+        Schema::dropIfExists('mecanicas');
     }
 }

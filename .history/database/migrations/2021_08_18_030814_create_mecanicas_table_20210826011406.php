@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateWorkshopMechanicsTable extends Migration
+class CreateMecanicasTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,16 +13,20 @@ class CreateWorkshopMechanicsTable extends Migration
      */
     public function up()
     {
-        Schema::create('workshop_mechanics', function (Blueprint $table) {
+        Schema::create('mecanicas', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->string('name');
             $table->string('address');
-            $table->string('email');
-            $table->string('services');
-            $table->string('image');
-            $table->boolean('state');
+            $table->string('phone');
+            $table->string('open_hour');
+            $table->string('close_hour');
+            $table->json('services');
+            $table->string('facebook');
+            $table->string('instagram');
+            $table->string('certificate');
+            $table->enum('state', ['pendiente', 'aprobado', 'rechazado'])->default('pendiente');
             $table->timestamps();
         });
     }
@@ -34,6 +38,6 @@ class CreateWorkshopMechanicsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('workshop_mechanics');
+        Schema::dropIfExists('mecanicas');
     }
 }

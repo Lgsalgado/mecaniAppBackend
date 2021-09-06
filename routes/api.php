@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\Api\SolicitudController;
+use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\MecanicaController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\JwtAuthController;
@@ -30,21 +32,49 @@ Route::group([
 Route::group([
     'middleware' => 'jwt.auth'
 ], function () {
+    // Ruta de usuario
+    Route::put('/auth/user', [UserController::class, 'updateUserProfile']);
+
     // Rutas para solicitudes
+    // Obtener solicitud por ID
+    Route::get('/user/request/{id}', [SolicitudController::class, 'findById']);
     //Obtener solicitudes pendientes
     Route::get('/requests/pending', [SolicitudController::class, 'pending']);
     // Obtener solicitudes aprobadas
     Route::get('/requests/approved', [SolicitudController::class, 'approved']);
     // Obtener solicitudes rechazadas
     Route::get('/requests/rejected', [SolicitudController::class, 'rejected']);
+    // Obtener registros completados
+    Route::get('/requests/completed', [SolicitudController::class, 'completed']);
+    Route::get('/requests/approveds', [SolicitudController::class, 'completedA']);
     // Insertar solicitud
     Route::post('/request', [SolicitudController::class, 'saveRequest']);
+    Route::post('/requesta', [SolicitudController::class, 'saveRequestA']);
     // Aprobar solicitud
     Route::put('/request/approve/{id}', [SolicitudController::class, 'approveRequest']);
     // Rechazar solicitud
     Route::put('/request/reject/{id}', [SolicitudController::class, 'rejectRequest']);
+    // Rechazar solicitud
+    Route::put('/request/complete/{id}', [SolicitudController::class, 'completeRequest']);
     // Obtener solicitud por usuario autenticado
     Route::get('/user/request', [SolicitudController::class, 'userRequest']);
     // Actualizar solicitud
     Route::post('/request/{id}', [SolicitudController::class, 'updateRequest']);
+    // Eliminar solicitud
+    Route::delete('/request/{id}', [SolicitudController::class, 'deleteRequest']);
+    // Rutas para mecanica
+    // Crear mecanica
+    Route::post('/workshop', [MecanicaController::class, 'saveWorkshop']);
+    // Actualizar mecanica
+    Route::post('/workshop/{id}', [MecanicaController::class, 'updateWorkshop']);
+    // Obtener mecanicas
+    Route::get('/workshop', [MecanicaController::class, 'listAll']);
+    // Obtener mecanicas por usuario
+    Route::get('/user/workshop', [MecanicaController::class, 'userWorkshop']);
+    // Eliminar mecanica
+    Route::delete('/workshop', [MecanicaController::class, 'deleteWorkshop']);
+    // Obtener taller
+    Route::get('/taller/{id}', [MecanicaController::class, 'getById']);
+    // Actualizar taller
+    Route::put('/taller/{id}', [MecanicaController::class, 'updateWorkshop']);
 });

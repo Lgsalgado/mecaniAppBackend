@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 
 class JwtAuthController extends Controller
@@ -56,11 +57,16 @@ class JwtAuthController extends Controller
         if ($req->fails()) {
             return response()->json($req->errors()->toJson(), 400);
         }
-
+        $user=$request;
         User::create(array_merge(
             $req->validated(),
             ['password' => bcrypt($request->password)]
         ));
+        Mail::send('emails.user.new', ['user' => $user], function ($m) use ($user) {
+            $m->from('MecaniApp@epn.com', 'Your Application');
+
+            $m->to($user->email, $user->name)->subject("MecaniApp Registro");
+        });
 
         return $this->login($request);
     }
@@ -100,7 +106,8 @@ class JwtAuthController extends Controller
             'access_token' => $token,
             'token_type' => 'bearer',
             'expires_in' => auth()->factory()->getTTL() * 60,
-            'user' => auth()->user()
+            'user' => auth()->user(),
+
         ]);
     }
 }
