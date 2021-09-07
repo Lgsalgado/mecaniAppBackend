@@ -47,6 +47,12 @@ class SolicitudController extends Controller
             ->with('user')
             ->get();
     }
+    public function inactived()
+    {
+        return Mecanica::where('state', 'inactivo')
+            ->with('user')
+            ->get();
+    }
     public function completed()
     {
         $mecanica = Mecanica::where('state', 'completado')
@@ -149,10 +155,12 @@ class SolicitudController extends Controller
             ], 404);
         }
         if ($mecanica->user_id != auth()->user()->id) {
-            return response()->json([
-                'success' => false,
-                'message' => 'No tiene permisos para ejecutar esta acción'
-            ], 403);
+            if (auth()->user()->role !== 'admin'){
+                return response()->json([
+                    'success' => false,
+                    'message' => 'No tiene permisos para ejecutar esta acción'
+                ], 403);
+            }
         }
         Mecanica::find($id)->update(['state' => 'completado']);
         return response()->json([
@@ -180,6 +188,30 @@ class SolicitudController extends Controller
             ], 404);
         }
         Mecanica::find($id)->update(['state' => 'rechazado']);
+        return response()->json([
+            'success' => true,
+            'Mecanica' => Mecanica::find($id)
+        ]);
+    }
+    public function inactiveRequest(Request $request, $id)
+    {
+        // Validar rol administrador
+        if (auth()->user()->role !== 'admin') {
+            return response()->json([
+                'success' => false,
+                'message' => 'No tiene permisos para ejecutar esta acción'
+            ], 403);
+        }
+
+        // Buscar Mecanica y validar si existe
+        $mecanica = Mecanica::find($id);
+        if (!$mecanica) {
+            return response()->json([
+                'success' => false,
+                'message' => 'La Mecanica no existe'
+            ], 404);
+        }
+        Mecanica::find($id)->update(['state' => 'inactivo']);
         return response()->json([
             'success' => true,
             'Mecanica' => Mecanica::find($id)

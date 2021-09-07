@@ -26,7 +26,7 @@ class CreateMecanicasTable extends Migration
             $table->string('facebook')->nullable();
             $table->string('instagram')->nullable();
             $table->string('certificate');
-            $table->enum('state', ['pendiente', 'aprobado', 'rechazado', 'completado'])->default('pendiente');
+            $table->enum('state', ['pendiente', 'aprobado', 'rechazado', 'completado','inactivo'])->default('pendiente');
             $table->timestamps();
         });
     }

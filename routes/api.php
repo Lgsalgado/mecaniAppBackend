@@ -47,13 +47,17 @@ Route::group([
     // Obtener registros completados
     Route::get('/requests/completed', [SolicitudController::class, 'completed']);
     Route::get('/requests/approveds', [SolicitudController::class, 'completedA']);
-    // Insertar solicitud
+   // Insertar solicitud
     Route::post('/request', [SolicitudController::class, 'saveRequest']);
     Route::post('/requesta', [SolicitudController::class, 'saveRequestA']);
     // Aprobar solicitud
     Route::put('/request/approve/{id}', [SolicitudController::class, 'approveRequest']);
     // Rechazar solicitud
     Route::put('/request/reject/{id}', [SolicitudController::class, 'rejectRequest']);
+    // Inactivar taller
+    Route::put('/request/inactive/{id}', [SolicitudController::class, 'inactiveRequest']);
+    // Obtener registros inactivos
+    Route::get('/requests/inactived', [SolicitudController::class, 'inactived']);
     // Rechazar solicitud
     Route::put('/request/complete/{id}', [SolicitudController::class, 'completeRequest']);
     // Obtener solicitud por usuario autenticado
