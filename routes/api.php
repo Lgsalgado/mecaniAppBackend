@@ -1,8 +1,10 @@
 <?php
 
+use App\Http\Controllers\Api\PromocionController;
 use App\Http\Controllers\Api\SolicitudController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\MecanicaController;
+use App\Http\Controllers\Api\ComplainController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\JwtAuthController;
@@ -81,4 +83,31 @@ Route::group([
     Route::get('/taller/{id}', [MecanicaController::class, 'getById']);
     // Actualizar taller
     Route::put('/taller/{id}', [MecanicaController::class, 'updateWorkshop']);
+
+    // Crear promocion
+    Route::post('/promocion', [PromocionController::class, 'savePromocion']);
+    // Obtener promociones activas
+    Route::get('/promocions/actived/{id}', [PromocionController::class, 'actived']);
+    // Obtener promociones inactivas
+    Route::get('/promocions/inactived/{id}', [PromocionController::class, 'inactived']);
+    // Inactivar promocion
+    Route::put('/promocion/inactive/{id}', [PromocionController::class, 'inactivePromocion']);
+    // Activar promocion
+    Route::put('/promocion/active/{id}', [PromocionController::class, 'activePromocion']);
+
+    //Obtener queja pendientes
+    Route::get('/quejas/{id}/pending', [ComplainController::class, 'pending']);
+    //Obtener queja aprobadas
+    Route::get('/quejas/{id}/approved', [ComplainController::class, 'approved']);
+    //Obtener queja rechazadas
+    Route::get('/quejas/{id}/rejected', [ComplainController::class, 'rejected']);
+    //Rechazar queja
+    Route::put('/queja/reject/{id}', [ComplainController::class, 'reject']);
+    //Aprobar queja
+    Route::put('/queja/approve/{id}', [ComplainController::class, 'approve']);
+    //Responder queja
+    Route::put('/queja/answer/{id}', [ComplainController::class, 'answer']);
+
+
+
 });

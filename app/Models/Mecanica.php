@@ -18,8 +18,12 @@ class Mecanica extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function promociones()
+    public function promocion()
     {
         return $this->hasMany(Promocion::class);
+    }
+    public function complain()
+    {
+        return $this->hasMany(Complain::class);
     }
 }
